@@ -8,7 +8,7 @@ const connection = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: process.env.PASS,
-  database: "employees",
+  database: "employees_db",
   port: 3306,
 });
 
@@ -28,6 +28,7 @@ const promptDisplay = () => {
           "Add Employee",
           "Add Role",
           "Add Department",
+          "Update Employee Role",
           "Delete Employee",
           "Delete Role",
           "Delete Department",
@@ -56,6 +57,9 @@ const promptDisplay = () => {
           break;
         case "Add Department":
           addDepartment();
+          break;
+        case "Update Employee Role":
+          updateEmployee();
           break;
         case "Delete Employee":
           deleteEmployee();
@@ -91,6 +95,81 @@ const viewRoles = () => {
     console.table(data);
     promptDisplay();
   });
+};
+
+const addEmployee = () => {
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "first_name",
+        message: "Enter employee first name",
+      },
+      {
+        type: "input",
+        name: "last_name",
+        message: "Enter employee last name",
+      },
+      {
+        type: "input",
+        name: "role_id",
+        message: "Enter employee role ID",
+      },
+      {
+        type: "input",
+        name: "manager_id",
+        message: "Enter employee manager ID",
+      },
+    ])
+    .then((res) => {
+      connection.query(
+        "INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?);",
+        [res.first_name, res.last_name, res.role_id, res.manager_id],
+        (err, data) => {
+          if (err) {
+            throw err;
+          } else {
+            console.log("Employee Added");
+            promptDisplay();
+          }
+        }
+      );
+    });
+};
+
+const addRole = () => {
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "title",
+        message: "Enter role title",
+      },
+      {
+        type: "input",
+        name: "salary",
+        message: "Enter role salary",
+      },
+      {
+        type: "input",
+        name: "department_id",
+        message: "Enter role department ID",
+      },
+    ])
+    .then((res) => {
+      connection.query(
+        "INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?);",
+        [res.title, res.salary, res.department_id],
+        (err, data) => {
+          if (err) {
+            throw err;
+          } else {
+            console.log("Role Added");
+            promptDisplay();
+          }
+        }
+      );
+    });
 };
 
 // async function viewEmployees() {
