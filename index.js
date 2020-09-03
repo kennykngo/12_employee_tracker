@@ -80,6 +80,19 @@ const viewEmployees = () => {
   });
 };
 
+const viewDepartments = () => {
+  connection.query("SELECT * FROM department", (err, data) => {
+    console.table(data);
+    promptDisplay();
+  });
+};
+const viewRoles = () => {
+  connection.query("SELECT * FROM role", (err, data) => {
+    console.table(data);
+    promptDisplay();
+  });
+};
+
 // async function viewEmployees() {
 //   const employees = await db.findAllEmployees();
 
