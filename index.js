@@ -172,6 +172,61 @@ const addRole = () => {
     });
 };
 
+const addDepartment = () => {
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "name",
+        message: "Enter department name",
+      },
+    ])
+    .then((res) => {
+      connection.query(
+        "INSERT INTO department (name) VALUES (?)",
+        [res.name],
+        (err, data) => {
+          if (err) {
+            throw err;
+          } else {
+            console.log("Department Added");
+            promptDisplay();
+          }
+        }
+      );
+    });
+};
+
+const updateEmployee = () => {
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "employee_id",
+        message: "Enter Employee ID",
+      },
+      {
+        type: "input",
+        name: "new_role_id",
+        message: "Enter New Role ID",
+      },
+    ])
+    .then((res) => {
+      connection.query(
+        "UPDATE employee SET role_id = ? WHERE id = ?",
+        [res.new_role_id, res.employee_id],
+        (err, data) => {
+          if (err) {
+            throw err;
+          } else {
+            console.log("Employee Role Updated");
+            promptDisplay();
+          }
+        }
+      );
+    });
+};
+
 // async function viewEmployees() {
 //   const employees = await db.findAllEmployees();
 
